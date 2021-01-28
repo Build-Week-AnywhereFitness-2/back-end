@@ -1,25 +1,5 @@
-
 exports.up = function(knex) {
     return knex.schema
-        .createTable('users', table => {
-            table.increments('id');
-            table.string('username').notNullable();
-            table.string('password').notNullable();
-            table.string('full_name').notNullable();
-
-            table.int('role')
-                .references('id')
-                .inTable('roles')
-                .notNullable()
-                .onUpdate('CASCADE')
-                .onDelete('CASCADE');
-
-            table.int('signup_code')
-                .references('id')
-                .inTable('signup_codes')
-                .onUpdate('CASCADE')
-                .onDelete('CASCADE');
-        })
         .createTable('signup_codes', table => {
             table.increments('id');
             table.string('code').notNullable();
@@ -27,6 +7,28 @@ exports.up = function(knex) {
         .createTable('roles', table => {
             table.increments('id');
             table.string('name').notNullable();
+        })
+        .createTable('users', table => {
+            table.increments('id');
+            table.string('username').notNullable();
+            table.string('password').notNullable();
+            table.string('full_name').notNullable();
+
+            // Default to client
+            table.int('role')
+                .references('id')
+                .inTable('roles')
+                .onUpdate('CASCADE')
+                .onDelete('SET NULL')
+                .defaultTo(1);
+
+            // Default to null
+            table.int('signup_code')
+                .references('id')
+                .inTable('signup_codes')
+                .defaultTo(null)
+                .onUpdate('CASCADE')
+                .onDelete('CASCADE');
         })
         .createTable('classes', table => {
             table.increments('id');
