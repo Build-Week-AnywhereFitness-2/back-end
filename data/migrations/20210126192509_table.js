@@ -17,7 +17,6 @@ exports.up = function(knex) {
             table.int('signup_code')
                 .references('id')
                 .inTable('signup_codes')
-                .notNullable()
                 .onUpdate('CASCADE')
                 .onDelete('CASCADE');
         })
