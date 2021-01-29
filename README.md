@@ -32,4 +32,4 @@ Search queries for this route support any class property. Refer to the class sch
 | location        | String      | Yes      | Class's location. e.g _Los Angeles, CA_                                                                     |
 | attendees_amt   | Int         | No       | The amount of clients registered to attend a class. Defaults to _0_ (if not provided).                      |
 | max_class_size  | Int         | No       | Max amount of clients a class can take. Defaults to _64_ (if not provided).                                 |
-| Cancelled       | bool        | No       | If the class has been cancelled or not. Defaults to _false_ (if not provided)                               |
+| cancelled       | bool        | No       | If the class has been cancelled or not. Defaults to _false_ (if not provided)                               |
