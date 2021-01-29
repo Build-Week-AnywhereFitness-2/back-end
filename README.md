@@ -14,7 +14,8 @@ Deployed URL: https://anywherefitness2.herokuapp.com/
 | /api/auth/user/:id | PUT | none. (Provide any changes to be made in body object with their respective property name e.g 'password: "x1234"') |
 | /api/classes | GET | Valid token in req.headers.authorization |
 
-/api/classes -- works with query strings to search through all classes. For example, /api/classes?name=Yoga 101 will return all classes named Yoga 101.
+[/api/classes] works with query strings. For example, /api/classes?name=Yoga 101 will return all classes named Yoga 101.
+
 Search queries for this route support any class property. Refer to the class schema to see each property and their respective types.
 
 #### Schema for /api/classes
