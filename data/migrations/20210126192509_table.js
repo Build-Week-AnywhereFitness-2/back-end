@@ -47,7 +47,7 @@ exports.up = function(knex) {
                 .onUpdate('CASCADE')
                 .onDelete('CASCADE');
             table.string('start_time').notNullable();
-            table.float('durationHr').notNullable();
+            table.float('duration_hour').notNullable();
             table.int('intensity_level').notNullable();
             table.string('location').notNullable();
             table.int('attendees_amt')

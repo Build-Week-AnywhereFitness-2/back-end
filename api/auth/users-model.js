@@ -33,9 +33,9 @@ async function remove(id) {
     return Promise.resolve(true);
 }
 
-// Returns a promise that resolves to true successfully if changed
+// Returns a promise that resolves to true if successfully changed
 async function update(id, changes) {
-    const [ changedRecords ] = await db('classes').where({ id }).update(changes);
+    const changedRecords = await db('classes').where({ id }).update(changes);
 
     if (!changedRecords || changedRecords <= 0) {
         return Promise.resolve(null);

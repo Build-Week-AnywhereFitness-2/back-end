@@ -10,19 +10,18 @@ function findById(id) {
 
 // Returns a promise that resolves to a single class obj. Pass an object with the necessary search parameters as properties e.g { id: 1, name: "Yoga 101" }
 function findBy(...property) {
-    console.log(property[0])
     return db('classes').where(property[0]);
 }
 
 async function add(classData) {
-    const [ newUserID ] = await db('classes').insert(classData);
+    const [ newClassID ] = await db('classes').insert(classData);
 
-    if (!newUserID) {
+    if (!newClassID) {
         return Promise.resolve(null);
     }
 
-    const newUser = await findById(newUserID);
-    return Promise.resolve(newUser);
+    const newClass = await findById(newClassID);
+    return Promise.resolve(newClass);
 }
 
 // Returns a promise that resolves to true if successfully removed
@@ -38,7 +37,7 @@ async function remove(id) {
 
 // Returns a promise that resolves to true successfully if changed
 async function update(id, changes) {
-    const [ changedRecords ] = await db('classes').where({ id }).update(changes);
+    const changedRecords = await db('classes').where({ id }).update(changes);
 
     if (!changedRecords || changedRecords <= 0) {
         return Promise.resolve(null);
@@ -53,5 +52,5 @@ module.exports = {
     findBy,
     add,
     remove,
-    update,
+    update
 }
