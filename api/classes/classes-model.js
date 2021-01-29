@@ -11,7 +11,7 @@ function findById(id) {
 // Returns a promise that resolves to a single class obj. Pass an object with the necessary search parameters as properties e.g { id: 1, name: "Yoga 101" }
 function findBy(...property) {
     console.log(property[0])
-    return db('classes').where(property[0]).first();
+    return db('classes').where(property[0]);
 }
 
 async function add(classData) {

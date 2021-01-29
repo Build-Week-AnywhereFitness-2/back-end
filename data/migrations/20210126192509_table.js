@@ -30,11 +30,22 @@ exports.up = function(knex) {
                 .onUpdate('CASCADE')
                 .onDelete('CASCADE');
         })
+        .createTable('class_types', table => {
+            table.increments('id');
+            table.string('name').notNullable().unique();
+        })
         .createTable('classes', table => {
             table.increments('id');
             table.string('name')
                 .notNullable()
                 .unique();
+            table.int('type')
+                .notNullable()
+                .defaultTo(1)
+                .references('id')
+                .inTable('class_types')
+                .onUpdate('CASCADE')
+                .onDelete('CASCADE');
             table.string('start_time').notNullable();
             table.string('duration').notNullable();
             table.int('intensity_level').notNullable();
@@ -84,6 +95,7 @@ exports.down = function(knex) {
     return knex.schema
         .dropTableIfExists('instructor_classes')
         .dropTableIfExists('classes')
+        .dropTableIfExists('class_types')
         .dropTableIfExists('roles')
         .dropTableIfExists('signup_codes')
         .dropTableIfExists('users')
