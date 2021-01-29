@@ -26,7 +26,7 @@ function restrictRoute() {
             req.user = decoded.payload;
         })
 
-        next();
+        return next();
     }
 }
 
