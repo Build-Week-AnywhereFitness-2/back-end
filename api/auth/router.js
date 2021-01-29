@@ -76,7 +76,7 @@ router.post('/login', validateUserCreds(), async (req, res) => {
     }
 
     // Generate JWT -- setup additional JWT settings with an options obj in this call
-    const token = jwt.sign({ sub: user.id, username: user.username }, process.env.JWT_SECRET || "keepitsafe,keepitsecret");
+    const token = jwt.sign({ sub: user.id, username: user.username, role: user.role, full_name: user.full_name }, process.env.JWT_SECRET || "keepitsafe,keepitsecret");
     if (!token) {
       return res.status(500).json("please try again");
     }
