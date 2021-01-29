@@ -2,7 +2,7 @@
 
 PVD: https://docs.google.com/document/d/1Os7tF6ugUC_3bFkN-WyqjIMbtXUx4Od9beoMa2XAgGg/edit?usp=sharing
 
-Deployed URL:
+Deployed URL: https://anywherefitness2.herokuapp.com/
 
 ## Endpoints
 
