@@ -1,19 +1,21 @@
 const db = require('../../data/dbConfig');
 
 function find() {
-    return db('users');
+    return db('classes');
 }
 
 function findById(id) {
-    return db('users').where({ id }).first();
+    return db('classes').where({ id }).first();
 }
 
-function findByUsername(username) {
-    return db('users').where({ username }).first();
+// Returns a promise that resolves to a single class obj. Pass an object with the necessary search parameters as properties e.g { id: 1, name: "Yoga 101" }
+function findBy(...property) {
+    console.log(property[0])
+    return db('classes').where(property[0]).first();
 }
 
-async function add(userData) {
-    const [ newUserID ] = await db('users').insert(userData);
+async function add(classData) {
+    const [ newUserID ] = await db('classes').insert(classData);
 
     if (!newUserID) {
         return Promise.resolve(null);
@@ -23,8 +25,9 @@ async function add(userData) {
     return Promise.resolve(newUser);
 }
 
+// Returns a promise that resolves to true if successfully removed
 async function remove(id) {
-    const [ delRecords ] = await db('users').where({ id }).del();
+    const [ delRecords ] = await db('classes').where({ id }).del();
 
     if (!delRecords || delRecords <= 0) {
         return Promise.resolve(null);
@@ -47,8 +50,8 @@ async function update(id, changes) {
 module.exports = {
     find,
     findById,
-    findByUsername,
+    findBy,
     add,
     remove,
-    update
+    update,
 }

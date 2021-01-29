@@ -3,7 +3,9 @@ function validateUserCreds() {
         const { username, password } = req.body;
 
         if (!username || !password) {
-            return res.status(400).json("username and password required");
+            return res.status(400).json({
+                message: "Missing required parameters: (username, password)"
+            });
         }
 
         req.credentials = {

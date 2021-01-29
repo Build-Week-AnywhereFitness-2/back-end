@@ -2,7 +2,7 @@ const router = require('express').Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
-const validateUserCreds = require('./validateUserCreds');
+const validateUserCreds = require('../middleware/validateUserCreds');
 
 const Users = require('./users-model');
 const SignupCodes = require('./signup_code-model');
@@ -91,5 +91,35 @@ router.post('/login', validateUserCreds(), async (req, res) => {
   }
 
 });
+
+// Endpoint for user's editing their account. Placing this endpoint in the auth router might be a debatable choice
+router.put('/user/:id', (req, res) => {
+  const { id } = req.params;
+
+  if (req.body.username || req.body.id) {
+    return res.status(400).json({
+      message: "The provided data is not changeable. (username, id)"
+    })
+  }
+
+  Users.update(id, req.body)
+    .then(success => {
+      if (!success) {
+        return res.status(400).json({
+          message: "There has been an issue updating the account with the provided data. Please check the given parameters in the request body"
+        });
+      }
+
+      Users.findById(id)
+        .then(user => {
+          res.status(200).json(user);
+        })
+    })
+    .catch(() => {
+      res.status(500).json({
+        message: "DB error"
+      })
+    })
+})
 
 module.exports = router;

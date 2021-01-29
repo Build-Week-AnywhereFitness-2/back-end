@@ -4,6 +4,7 @@ const cors = require('cors');
 
 // <---- Import routers here
 const authRouter = require('./auth/router');
+const classesRouter = require('./classes/router');
 
 const server = express();
 
@@ -14,6 +15,7 @@ server.use(cors());
 
 // ROUTERS //
 server.use('/api/auth', authRouter);
+server.use('/api/classes', classesRouter);
 
 server.get('/', (req, res) => {
     res.status(200).json("API up");
