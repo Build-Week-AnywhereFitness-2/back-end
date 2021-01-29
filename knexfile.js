@@ -1,5 +1,4 @@
 // Update with your config settings.
-
 module.exports = {
   development: {
     client: 'sqlite3',
@@ -12,6 +11,11 @@ module.exports = {
     },
     seeds: {
       directory: './data/seeds'
+    },
+    pool: {
+      afterCreate: (conn, cb) => {
+        conn.run('PRAGMA foreign_keys = ON', cb)
+      }
     }
   },
 
