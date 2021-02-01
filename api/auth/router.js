@@ -7,7 +7,7 @@ const validateUserCreds = require('../middleware/validateUserCreds');
 const Users = require('./users-model');
 const SignupCodes = require('./signup_code-model');
 
-const dbErrorMsg = { message: "There has been an error with the database" }
+const dbErrorMessage = { message: "There has been an error with the database" }
 
 router.post('/register', validateUserCreds(), async (req, res) => {
     try {
@@ -57,8 +57,7 @@ router.post('/register', validateUserCreds(), async (req, res) => {
         const newUser = await Users.add(userData);
         return res.status(201).json({ ...newUser, password: "HIDDEN" });
     } catch (err) {
-        console.log(err)
-        res.status(500).json(dbErrorMsg);
+        res.status(500).json(dbErrorMessage);
     }
 });
 
@@ -87,39 +86,38 @@ router.post('/login', validateUserCreds(), async (req, res) => {
     })
 
   } catch {
-    res.status(500).json(dbErrorMsg);
+    res.status(500).json(dbErrorMessage);
   }
 
 });
 
 // Endpoint for user's editing their account. Placing this endpoint in the auth router might be a debatable choice
-router.put('/user/:id', (req, res) => {
-  const { id } = req.params;
+router.put('/user/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const changes = req.body;
 
-  if (req.body.username || req.body.id) {
-    return res.status(400).json({
-      message: "The provided data is not changeable. (username, id)"
-    })
-  }
-
-  Users.update(id, req.body)
-    .then(success => {
-      if (!success) {
-        return res.status(400).json({
-          message: "There has been an issue updating the account with the provided data. Please check the given parameters in the request body"
-        });
-      }
-
-      Users.findById(id)
-        .then(user => {
-          res.status(200).json(user);
-        })
-    })
-    .catch(() => {
-      res.status(500).json({
-        message: "DB error"
+    // Validate user input
+    if (req.body.username || req.body.id) {
+      return res.status(400).json({
+        message: "The provided data is not changeable. (username, id)"
       })
-    })
+    }
+
+    const didUserUpdate = await Users.update(id, changes);
+
+    if(!didUserUpdate) {
+      return res.status(400).json({
+        message: "There has been an issue updating the account with the provided data. Please check the given parameters in the request body"
+      })
+    }
+
+    const updatedUser = await Users.findById(id);
+
+    res.status(200).json(updatedUser);
+  } catch {
+    res.status(500).json(dbErrorMessage);
+  }
 })
 
 module.exports = router;

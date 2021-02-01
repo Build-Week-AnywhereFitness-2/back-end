@@ -26,7 +26,7 @@ async function add(classData) {
 
 // Returns a promise that resolves to true if successfully removed
 async function remove(id) {
-    const [ delRecords ] = await db('classes').where({ id }).del();
+    const delRecords = await db('classes').where({ id }).del();
 
     if (!delRecords || delRecords <= 0) {
         return Promise.resolve(null);
