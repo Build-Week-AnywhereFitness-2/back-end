@@ -2,6 +2,8 @@ const express = require('express');
 const helmet = require('helmet')
 const cors = require('cors');
 const morgan = require('morgan');
+const cookieParser = require('cookie-parser');
+
 
 // <---- Import routers & custom middleware here
 const authRouter = require('./auth/router');
@@ -15,6 +17,7 @@ server.use(helmet());
 server.use(express.json());
 server.use(cors());
 server.use(morgan('dev'));
+server.use(cookieParser());
 server.use(restrictRoute());
 
 // ROUTERS //

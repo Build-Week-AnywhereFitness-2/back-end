@@ -1,4 +1,5 @@
 const router = require('express')();
+const validateUsersRole = require('../middleware/validateUsersRole');
 const Classes = require('./classes-model');
 
 const dbErrorMessage = {
@@ -7,7 +8,7 @@ const dbErrorMessage = {
 
 // GET a list of all posts. IF query strings are provided, search by those values. If not, return a list of all objects.
 // In a successful response, this endpoint always resolves to an _array_
-router.get('/', async (req, res) => {
+router.get('/', validateUsersRole(), async (req, res) => {
     try {
         const results = await Classes.findBy({ ...req.query });
         res.status(200).json(results);
@@ -17,9 +18,16 @@ router.get('/', async (req, res) => {
 });
 
 // POST classes -- creates new class object and returns new object upon
-router.post('/', async (req, res) => {
+router.post('/', validateUsersRole(), async (req, res) => {
     try {
         const classData = req.body;
+
+        // Validate user's role
+        if (req.cookies.user.role != 2) {
+            return res.status(403).json({
+                message: "User does not have permission to create class"
+            })
+        }
 
         // Validate the request body
         if (!classData.name || !classData.start_time || !classData.duration_hour || !classData.intensity_level || !classData.location) {
@@ -52,7 +60,7 @@ router.post('/', async (req, res) => {
 })
 
 // PUT classes -- updates class with given id
-router.put('/:id', async (req, res) => {
+router.put('/:id', validateUsersRole(), async (req, res) => {
     try {
         const { id } = req.params;
         const changes = req.body;
@@ -89,7 +97,7 @@ router.put('/:id', async (req, res) => {
 })
 
 // DELETE classes -- removes class with given id
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', validateUsersRole(), async (req, res) => {
     try {
         const { id } = req.params;
 

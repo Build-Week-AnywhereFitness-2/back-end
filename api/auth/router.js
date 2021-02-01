@@ -1,11 +1,11 @@
 const router = require('express').Router();
 const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
 
 const validateUserCreds = require('../middleware/validateUserCreds');
 
 const Users = require('./users-model');
 const SignupCodes = require('./signup_code-model');
+const generateToken = require('../utils/generateToken');
 
 const dbErrorMessage = { message: "There has been an error with the database" }
 
@@ -29,28 +29,28 @@ router.post('/register', validateUserCreds(), async (req, res) => {
         const isUsernameTaken = (await Users.findByUsername(userData.username) ? true : false)
 
         if (isUsernameTaken) {
-            return res.status(400).json("username taken")
+            return res.status(400).json({
+              message: "username taken"
+            })
         }
 
         // Generate password hash and set it to the userData obj
         const passwordHash = bcrypt.hashSync(userData.password, process.env.SALT || 8);
         userData.password = passwordHash;
 
-        // Check if client provided signup code. If so, verify it with the DB
-        if (userData.signup_code) {
-            SignupCodes.findByCode(userData.signup_code)
-                .then(code => {
-                    // If the provided code does not exist in the DB, return a response of status 400
-                    if (!code) {
-                        return res.status(400).json({
-                            message: "Invalid code provided"
-                        })
-                    }
 
-                    // Set the signup_code to the code's id
-                    userData.signup_code = code.id;
-                    userData.role = 2;
-                })
+        if (userData.signup_code) {
+          const code = SignupCodes.findByCode(userData.signup_code);
+
+          if (!code) {
+            return res.status(400).json({
+              message: "Invalid code"
+            })
+          }
+
+          // Set the signup_code to the code's id
+          userData.signup_code = code.id;
+          userData.role = 2;
         }
 
         // Add user
@@ -74,8 +74,16 @@ router.post('/login', validateUserCreds(), async (req, res) => {
       return res.status(400).json("invalid credentials")
     }
 
-    // Generate JWT -- setup additional JWT settings with an options obj in this call
-    const token = jwt.sign({ sub: user.id, username: user.username, role: user.role, full_name: user.full_name }, process.env.JWT_SECRET || "keepitsafe,keepitsecret");
+    const jwtPayload = {
+      sub: user.id,
+      username: user.username,
+      role: user.role,
+      full_name: user.full_name
+    }
+
+    // Generate JWT
+    const token = generateToken(jwtPayload);
+
     if (!token) {
       return res.status(500).json("please try again");
     }
@@ -88,7 +96,6 @@ router.post('/login', validateUserCreds(), async (req, res) => {
   } catch {
     res.status(500).json(dbErrorMessage);
   }
-
 });
 
 // Endpoint for user's editing their account. Placing this endpoint in the auth router might be a debatable choice
@@ -102,6 +109,12 @@ router.put('/user/:id', async (req, res) => {
       return res.status(400).json({
         message: "The provided data is not changeable. (username, id)"
       })
+    }
+
+    // Check if the request provides a password -- if so, hash the new password
+    if (req.body.password) {
+      const passwordHash = bcrypt.hashSync(req.body.password, process.env.SALT || 8);
+      req.body.password = passwordHash;
     }
 
     const didUserUpdate = await Users.update(id, changes);

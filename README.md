@@ -4,6 +4,10 @@ PVD: https://docs.google.com/document/d/1Os7tF6ugUC_3bFkN-WyqjIMbtXUx4Od9beoMa2X
 
 Deployed URL: https://anywherefitness2.herokuapp.com/
 
+##### Instructor signup-codes: signup_1234!
+
+Providing a signup code at register makes the user an instructor
+
 ## Endpoints
 
 ### Methods
