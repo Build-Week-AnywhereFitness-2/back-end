@@ -52,7 +52,7 @@ Returns a list of all the classes the user has or plans to attend.
 ### GET [/api/user/:id/instructors-classes]
 Returns a list of all the classes that belong to the user as an instructor
 
-### Query strings on GET [/api/classes]
+#### Query strings on GET [/api/classes]
 [/api/classes?type=1] will return all classes with a type of 1 (misc).
 
 [/api/classes?name=Yoga] 101&cancelled=false - returns all classes with name _Yoga 101_ and _not_ cancelled
