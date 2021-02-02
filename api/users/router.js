@@ -3,13 +3,14 @@ const router = require('express').Router();
 const Users = require('../auth/users-model');
 const Classes = require('../classes/classes-model');
 const ClientsClasses = require('../clients_classes/model');
+const InstructorsClasses = require('../instructors_classes/model');
 
 const dbErrorMsg = {
     message: "Some DB error occured."
 }
 
-// GET -- /api/users/:id/classes
-router.get('/:id/classes', async (req, res) => {
+// GET -- /api/users/:id/clients-classes
+router.get('/:id/clients-classes', async (req, res) => {
     try {
         const { id } = req.params;
         const results = await ClientsClasses.findByUserId(id);
@@ -19,6 +20,18 @@ router.get('/:id/classes', async (req, res) => {
         res.status(500).json(dbErrorMsg);
     }
 });
+
+// GET -- api/users/:id/instructors-classes
+router.get(('/:id/instructors-classes'), async (req, res) => {
+    try {
+        const { id } = req.params;
+        const results = await InstructorsClasses.findByUserId(id);
+
+        res.status(200).json(results);
+    } catch {
+        res.status(500).json(dbErrorMsg);
+    }
+})
 
 // POST -- /api/users/:id/attend-class. Marks the user's planned attendance of a class
 router.post('/:id/attend-class', async (req, res) => {
