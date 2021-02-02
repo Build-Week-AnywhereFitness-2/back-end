@@ -6,9 +6,10 @@ const cookieParser = require('cookie-parser');
 
 
 // <---- Import routers & custom middleware here
+const restrictRoute = require('./middleware/restrictRoute');
 const authRouter = require('./auth/router');
 const classesRouter = require('./classes/router');
-const restrictRoute = require('./middleware/restrictRoute');
+const usersRouter = require('./users/router');
 
 const server = express();
 
@@ -23,6 +24,8 @@ server.use(restrictRoute());
 // ROUTERS //
 server.use('/api/auth', authRouter);
 server.use('/api/classes', classesRouter);
+server.use('/api/users', usersRouter);
+
 
 server.get('/', (req, res) => {
     res.status(200).json("API up");

@@ -1,6 +1,8 @@
 const router = require('express')();
-const validateUsersRole = require('../middleware/validateUsersRole');
 const Classes = require('./classes-model');
+const InstructorsClasses = require('../instructors_classes/model');
+
+const validateUserRole = require('../middleware/validateUserRole');
 
 const dbErrorMessage = {
     message: "Some error occured..."
@@ -8,7 +10,7 @@ const dbErrorMessage = {
 
 // GET a list of all posts. IF query strings are provided, search by those values. If not, return a list of all objects.
 // In a successful response, this endpoint always resolves to an _array_
-router.get('/', validateUsersRole(), async (req, res) => {
+router.get('/', async (req, res) => {
     try {
         const results = await Classes.findBy({ ...req.query });
         res.status(200).json(results);
@@ -18,16 +20,10 @@ router.get('/', validateUsersRole(), async (req, res) => {
 });
 
 // POST classes -- creates new class object and returns new object upon
-router.post('/', validateUsersRole(), async (req, res) => {
+router.post('/', validateUserRole(), async (req, res) => {
     try {
+        const { user } = req.cookies;
         const classData = req.body;
-
-        // Validate user's role
-        if (req.cookies.user.role != 2) {
-            return res.status(403).json({
-                message: "User does not have permission to create class"
-            })
-        }
 
         // Validate the request body
         if (!classData.name || !classData.start_time || !classData.duration_hour || !classData.intensity_level || !classData.location) {
@@ -52,15 +48,19 @@ router.post('/', validateUsersRole(), async (req, res) => {
             })
         }
 
+        // Now we insert a row into the instructors_classes junction table to link the instructor with their newly created class
+        await InstructorsClasses.add(user.sub, classObj.id);
+
         return res.status(201).json(classObj);
 
-    } catch {
+    } catch(err) {
+        console.log(err);
         res.status(500).json(dbErrorMessage);
     }
 })
 
 // PUT classes -- updates class with given id
-router.put('/:id', validateUsersRole(), async (req, res) => {
+router.put('/:id', validateUserRole(), async (req, res) => {
     try {
         const { id } = req.params;
         const changes = req.body;
@@ -97,7 +97,7 @@ router.put('/:id', validateUsersRole(), async (req, res) => {
 })
 
 // DELETE classes -- removes class with given id
-router.delete('/:id', validateUsersRole(), async (req, res) => {
+router.delete('/:id', validateUserRole(), async (req, res) => {
     try {
         const { id } = req.params;
 

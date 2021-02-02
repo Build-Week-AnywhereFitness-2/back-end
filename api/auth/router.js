@@ -1,11 +1,14 @@
 const router = require('express').Router();
 const bcrypt = require('bcryptjs');
 
+// utils / middleware
 const validateUserCreds = require('../middleware/validateUserCreds');
+const generateToken = require('../utils/generateToken');
+const decodeToken = require('../utils/decodeToken');
 
+// Models
 const Users = require('./users-model');
 const SignupCodes = require('./signup_code-model');
-const generateToken = require('../utils/generateToken');
 
 const dbErrorMessage = { message: "There has been an error with the database" }
 
@@ -59,7 +62,7 @@ router.post('/register', validateUserCreds(), async (req, res) => {
     } catch (err) {
         res.status(500).json(dbErrorMessage);
     }
-});
+})
 
 router.post('/login', validateUserCreds(), async (req, res) => {
   try {
@@ -88,6 +91,9 @@ router.post('/login', validateUserCreds(), async (req, res) => {
       return res.status(500).json("please try again");
     }
 
+    // Set payload to cookies
+    res.cookie('user', jwtPayload);
+
     return res.status(200).json({
       message: `Welcome, ${user.username}`,
       token
@@ -96,7 +102,7 @@ router.post('/login', validateUserCreds(), async (req, res) => {
   } catch {
     res.status(500).json(dbErrorMessage);
   }
-});
+})
 
 // Endpoint for user's editing their account. Placing this endpoint in the auth router might be a debatable choice
 router.put('/user/:id', async (req, res) => {
@@ -117,6 +123,13 @@ router.put('/user/:id', async (req, res) => {
       req.body.password = passwordHash;
     }
 
+    // Check that the user sending the request is the same user
+    if (id !== req.cookies.user.sub) {
+      return res.status(403).json({
+        message: "User can only update their own account"
+      })
+    }
+
     const didUserUpdate = await Users.update(id, changes);
 
     if(!didUserUpdate) {
@@ -128,6 +141,23 @@ router.put('/user/:id', async (req, res) => {
     const updatedUser = await Users.findById(id);
 
     res.status(200).json(updatedUser);
+  } catch {
+    res.status(500).json(dbErrorMessage);
+  }
+})
+
+// GET -- sends back the user data to the user
+router.get('/whoami', async (req, res) => {
+  try {
+    // No need to check that user has auth in headers. Our middleware takes care of that
+    const token = req.headers.authorization;
+
+    decodeToken(token, (err, decoded) => {
+      return res.status(200).json(decoded);
+    })
+
+    return res.status(200).json();
+
   } catch {
     res.status(500).json(dbErrorMessage);
   }

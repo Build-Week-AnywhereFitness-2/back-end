@@ -5,6 +5,8 @@ function restrictRoute() {
     return function (req, res, next) {
         const token =  req.headers.authorization;
 
+        console.log(req.cookies.user);
+
         // IF the user is not on a restricted path, return and call next (allow client to continue).
         if (req.path === '/api/auth/login' || req.path === '/api/auth/register') {
             return next();
