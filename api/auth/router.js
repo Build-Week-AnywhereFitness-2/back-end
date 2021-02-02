@@ -153,10 +153,16 @@ router.get('/whoami', async (req, res) => {
     const token = req.headers.authorization;
 
     decodeToken(token, (err, decoded) => {
-      return res.status(200).json(decoded);
-    })
+      if (err) {
+        return res.status(400).json({
+          message: "Invalid token"
+        })
+      }
 
-    return res.status(200).json();
+      const user = decoded;
+
+      return res.status(200).json({ id: user.sub, ...user });
+    })
 
   } catch {
     res.status(500).json(dbErrorMessage);
