@@ -47,7 +47,7 @@ Returns decoded information of verified json web token.
 Use this endpoint to get the client's id, username, role, or full name.
 
 ### GET [/api/user/:id/clients-classes]
-Returns a list of all the classes the user has or plans to attend.
+Returns a list of all the classes the user has atended or plans to attend.
 
 ### GET [/api/user/:id/instructors-classes]
 Returns a list of all the classes that belong to the user as an instructor
