@@ -93,12 +93,11 @@ exports.up = function(knex) {
 
 exports.down = function(knex) {
     return knex.schema
-        .dropTableIfExists('instructor_classes')
+        .dropTableIfExists('instructors_classes')
+        .dropTableIfExists('clients_classes')
         .dropTableIfExists('classes')
         .dropTableIfExists('class_types')
         .dropTableIfExists('roles')
         .dropTableIfExists('signup_codes')
         .dropTableIfExists('users')
-        .dropTableIfExists('instructors_classes')
-        .dropTableIfExists('clients_classes')
 };

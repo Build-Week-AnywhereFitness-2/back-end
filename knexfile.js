@@ -23,13 +23,13 @@ module.exports = {
     client: 'sqlite3',
     useNullAsDefault:true,
     connection: {
-      filename: './data/app-testing.db3'
+      filename: './data/testing/app-testing.db3'
     },
     migrations: {
       directory: './data/migrations'
     },
     seeds: {
-      directory: './data/seeds'
+      directory: './data/testing/seeds'
     }
   },
 
