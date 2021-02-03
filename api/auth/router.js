@@ -1,9 +1,6 @@
 const router = require('express').Router();
 const bcrypt = require('bcryptjs');
 
-// Configs //
-const bcryptConfig = require('../config/bcrypt');
-
 // utils / middleware
 const validateUserCreds = require('../middleware/validateUserCreds');
 const generateToken = require('../utils/generateToken');
@@ -41,7 +38,7 @@ router.post('/register', validateUserCreds(), async (req, res) => {
         }
 
         // Generate password hash and set it to the userData obj
-        const passwordHash = bcrypt.hashSync(userData.password, bcryptConfig.salt);
+        const passwordHash = bcrypt.hashSync(userData.password, process.env.SALT || 8);
         userData.password = passwordHash;
 
 
