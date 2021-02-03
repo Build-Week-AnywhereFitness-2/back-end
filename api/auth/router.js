@@ -1,6 +1,9 @@
 const router = require('express').Router();
 const bcrypt = require('bcryptjs');
 
+// Configs //
+const bcryptConfig = require('../config/bcrypt');
+
 // utils / middleware
 const validateUserCreds = require('../middleware/validateUserCreds');
 const generateToken = require('../utils/generateToken');
@@ -38,7 +41,7 @@ router.post('/register', validateUserCreds(), async (req, res) => {
         }
 
         // Generate password hash and set it to the userData obj
-        const passwordHash = bcrypt.hashSync(userData.password, process.env.SALT || 8);
+        const passwordHash = bcrypt.hashSync(userData.password, bcryptConfig.salt);
         userData.password = passwordHash;
 
 
@@ -74,6 +77,7 @@ router.post('/login', validateUserCreds(), async (req, res) => {
     }
 
     const isPasswordValid = bcrypt.compareSync(req.credentials.password, user.password);
+
     if (!isPasswordValid) {
       return res.status(400).json("invalid credentials")
     }
@@ -100,7 +104,8 @@ router.post('/login', validateUserCreds(), async (req, res) => {
       token
     })
 
-  } catch {
+  } catch (err) {
+    console.log(err)
     res.status(500).json(dbErrorMessage);
   }
 })
