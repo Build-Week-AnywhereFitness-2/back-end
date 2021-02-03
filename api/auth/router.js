@@ -38,7 +38,7 @@ router.post('/register', validateUserCreds(), async (req, res) => {
         }
 
         // Generate password hash and set it to the userData obj
-        const passwordHash = bcrypt.hashSync(userData.password, process.env.SALT || 8);
+        const passwordHash = bcrypt.hashSync(userData.password, parseInt(process.env.SALT) || 8);
         userData.password = passwordHash;
 
 
