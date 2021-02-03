@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const jwtConfig = require('../config/bcrypt');
+const jwtConfig = require('../config/jwt');
 
 // decodes token. callback function should have (err, decoded) args
 function decodeToken(token, callback) {
