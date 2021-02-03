@@ -15,7 +15,7 @@ exports.up = function(knex) {
             table.string('full_name').notNullable();
 
             // Default to client
-            table.int('role')
+            table.integer('role')
                 .references('id')
                 .inTable('roles')
                 .onUpdate('CASCADE')
@@ -23,7 +23,7 @@ exports.up = function(knex) {
                 .defaultTo(1);
 
             // Default to null
-            table.int('signup_code')
+            table.integer('signup_code')
                 .references('id')
                 .inTable('signup_codes')
                 .defaultTo(null)
@@ -39,7 +39,7 @@ exports.up = function(knex) {
             table.string('name')
                 .notNullable()
                 .unique();
-            table.int('type')
+            table.integer('type')
                 .notNullable()
                 .defaultTo(1)
                 .references('id')
@@ -48,24 +48,24 @@ exports.up = function(knex) {
                 .onDelete('CASCADE');
             table.string('start_time').notNullable();
             table.float('duration_hour').notNullable();
-            table.int('intensity_level').notNullable();
+            table.integer('intensity_level').notNullable();
             table.string('location').notNullable();
-            table.int('attendees_amt')
+            table.integer('attendees_amt')
                 .defaultTo(0)
                 .notNullable();
-            table.int('max_class_size')
+            table.integer('max_class_size')
                 .defaultTo(64)
                 .notNullable();
             table.bool('cancelled').defaultTo(false);
         })
         .createTable('instructors_classes', table => {
-            table.int('user_id')
+            table.integer('user_id')
                 .references('id')
                 .inTable('users')
                 .notNullable()
                 .onUpdate('CASCADE')
                 .onDelete('CASCADE');
-            table.int('class_id')
+            table.integer('class_id')
                 .references('id')
                 .inTable('classes')
                 .notNullable()
@@ -74,13 +74,13 @@ exports.up = function(knex) {
             table.primary(['user_id', 'class_id']);
         })
         .createTable('clients_classes', table => {
-            table.int('user_id')
+            table.integer('user_id')
                 .references('id')
                 .inTable('users')
                 .notNullable()
                 .onUpdate('CASCADE')
                 .onDelete('CASCADE');
-            table.int('class_id')
+            table.integer('class_id')
                 .references('id')
                 .inTable('classes')
                 .notNullable()
