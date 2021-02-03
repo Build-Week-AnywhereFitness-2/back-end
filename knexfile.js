@@ -21,7 +21,7 @@ module.exports = {
 
   testing: {
     client: 'sqlite3',
-    useNullAsDefault:true,
+    useNullAsDefault: true,
     connection: {
       filename: './data/testing/app-testing.db3'
     },
@@ -36,6 +36,10 @@ module.exports = {
   production: {
     client: 'pg',
     connection: process.env.DATABASE_URL,
+    ssl: {
+      require: true,
+      rejectUnauthorized: false
+    },
     migrations: {
         directory: __dirname + '/data/migrations',
     },
