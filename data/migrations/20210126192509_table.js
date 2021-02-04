@@ -97,7 +97,7 @@ exports.down = function(knex) {
         .dropTableIfExists('clients_classes')
         .dropTableIfExists('classes')
         .dropTableIfExists('class_types')
+        .dropTableIfExists('users')
         .dropTableIfExists('roles')
         .dropTableIfExists('signup_codes')
-        .dropTableIfExists('users')
 };
