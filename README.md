@@ -27,7 +27,7 @@ Providing a signup code at register makes the user an instructor
 | name            | String      | Yes      | Class's name. Unique to each class.                                                                         |
 | type            | Int         | No       | Refers to the class's category. 1 = Misc, 2 = Yoga, 3 = Crossfit. Defaults to _1_ (misc) (if not provided). |
 | start_time      | String date | Yes      | UTC Time. In format, _YYYY-DD-MM HH:MM:SS_                                                                  |
-| durationHr      | Float       | Yes      | Refers to class length (in hours). Possible values: _1_,  _0.5_, _1.3_, and so on.                          |
+| duration_hour   | Float       | Yes      | Refers to class length (in hours). Possible values: _1_,  _0.5_, _1.3_, and so on.                          |
 | intensity_level | Int         | Yes      | Refers to class difficulty level. 1-3. _1_ being the easiest, and _3_ being the hardest.                    |
 | location        | String      | Yes      | Class's location. e.g _Los Angeles, CA_                                                                     |
 | attendees_amt   | Int         | No       | The amount of clients registered to attend a class. Defaults to _0_ (if not provided).                      |
