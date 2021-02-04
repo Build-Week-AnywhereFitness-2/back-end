@@ -17,8 +17,8 @@ Providing a signup code at register makes the user an instructor
 | /api/auth/user/:id | PUT | none. (Provide any changes to be made in body object with their respective property name e.g 'password: "x1234"') |
 | /api/classes | GET, POST | Valid token in req.headers.authorization |
 | /api/classes/:id | PUT, DEL | Valid token in req.headers.authorization |
-| /api/user/:id/clients-classes | GET | Valid token in req.headers.authorization |
-| /api/user/:id/instructors-classes | GET | Valid token in req.headers.authorization |
+| /api/users/:id/clients-classes | GET | Valid token in req.headers.authorization |
+| /api/users/:id/instructors-classes | GET | Valid token in req.headers.authorization |
 | /api/classes/attend-class | POST | Valid token in req.headers.authorization |
 
 ### Schema for [/api/classes]
@@ -27,7 +27,7 @@ Providing a signup code at register makes the user an instructor
 | name            | String      | Yes      | Class's name. Unique to each class.                                                                         |
 | type            | Int         | No       | Refers to the class's category. 1 = Misc, 2 = Yoga, 3 = Crossfit. Defaults to _1_ (misc) (if not provided). |
 | start_time      | String date | Yes      | UTC Time. In format, _YYYY-DD-MM HH:MM:SS_                                                                  |
-| durationHr      | Float       | Yes      | Refers to class length (in hours). Possible values: _1_,  _0.5_, _1.3_, and so on.                          |
+| duration_hour   | Float       | Yes      | Refers to class length (in hours). Possible values: _1_,  _0.5_, _1.3_, and so on.                          |
 | intensity_level | Int         | Yes      | Refers to class difficulty level. 1-3. _1_ being the easiest, and _3_ being the hardest.                    |
 | location        | String      | Yes      | Class's location. e.g _Los Angeles, CA_                                                                     |
 | attendees_amt   | Int         | No       | The amount of clients registered to attend a class. Defaults to _0_ (if not provided).                      |
@@ -46,10 +46,10 @@ Returns decoded information of verified json web token.
 
 Use this endpoint to get the client's id, username, role, or full name.
 
-### GET [/api/user/:id/clients-classes]
+### GET [/api/users/:id/clients-classes]
 Returns a list of all the classes the user has atended or plans to attend.
 
-### GET [/api/user/:id/instructors-classes]
+### GET [/api/users/:id/instructors-classes]
 Returns a list of all the classes that belong to the user as an instructor
 
 #### Query strings on GET [/api/classes]
