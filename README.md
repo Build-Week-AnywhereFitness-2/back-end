@@ -14,7 +14,7 @@ Providing a signup code at register makes the user an instructor
 |----------|--------|--------------|
 | /api/auth/register | POST | username, password, full_name, signup_code (optional--only provide this if the user needs to be registered as an instructor) |
 | /api/auth/login | POST | username, password |
-| /api/auth/users/:id | PUT | none. (Provide any changes to be made in body object with their respective property name e.g 'password: "x1234"') |
+| /api/auth/user/:id | PUT | none. (Provide any changes to be made in body object with their respective property name e.g 'password: "x1234"') |
 | /api/classes | GET, POST | Valid token in req.headers.authorization |
 | /api/classes/:id | PUT, DEL | Valid token in req.headers.authorization |
 | /api/users/:id/clients-classes | GET | Valid token in req.headers.authorization |
