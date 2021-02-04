@@ -14,11 +14,11 @@ Providing a signup code at register makes the user an instructor
 |----------|--------|--------------|
 | /api/auth/register | POST | username, password, full_name, signup_code (optional--only provide this if the user needs to be registered as an instructor) |
 | /api/auth/login | POST | username, password |
-| /api/auth/user/:id | PUT | none. (Provide any changes to be made in body object with their respective property name e.g 'password: "x1234"') |
+| /api/auth/users/:id | PUT | none. (Provide any changes to be made in body object with their respective property name e.g 'password: "x1234"') |
 | /api/classes | GET, POST | Valid token in req.headers.authorization |
 | /api/classes/:id | PUT, DEL | Valid token in req.headers.authorization |
-| /api/user/:id/clients-classes | GET | Valid token in req.headers.authorization |
-| /api/user/:id/instructors-classes | GET | Valid token in req.headers.authorization |
+| /api/users/:id/clients-classes | GET | Valid token in req.headers.authorization |
+| /api/users/:id/instructors-classes | GET | Valid token in req.headers.authorization |
 | /api/classes/attend-class | POST | Valid token in req.headers.authorization |
 
 ### Schema for [/api/classes]
@@ -46,10 +46,10 @@ Returns decoded information of verified json web token.
 
 Use this endpoint to get the client's id, username, role, or full name.
 
-### GET [/api/user/:id/clients-classes]
+### GET [/api/users/:id/clients-classes]
 Returns a list of all the classes the user has atended or plans to attend.
 
-### GET [/api/user/:id/instructors-classes]
+### GET [/api/users/:id/instructors-classes]
 Returns a list of all the classes that belong to the user as an instructor
 
 #### Query strings on GET [/api/classes]
