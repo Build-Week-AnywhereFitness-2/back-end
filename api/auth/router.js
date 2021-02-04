@@ -58,7 +58,7 @@ router.post('/register', validateUserCreds(), async (req, res) => {
 
         // Add user
         const newUser = await Users.add(userData);
-        return res.status(201).json(newUser);
+        return res.status(201).json({ ...newUser, password: "HIDDEN" });
     } catch (err) {
         console.log(err);
         res.status(500).json(dbErrorMessage);
