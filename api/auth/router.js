@@ -76,7 +76,9 @@ router.post('/login', validateUserCreds(), async (req, res) => {
     const isPasswordValid = bcrypt.compareSync(req.credentials.password, user.password);
 
     if (!isPasswordValid) {
-      return res.status(400).json("invalid credentials")
+      return res.status(400).json({
+        message: "Invalid credentials"
+      })
     }
 
     const jwtPayload = {
@@ -90,7 +92,9 @@ router.post('/login', validateUserCreds(), async (req, res) => {
     const token = generateToken(jwtPayload);
 
     if (!token) {
-      return res.status(500).json("please try again");
+      return res.status(500).json({
+        message: "Internal error. Please try again"
+      });
     }
 
     // Set payload to cookies
