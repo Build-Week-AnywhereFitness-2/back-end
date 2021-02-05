@@ -19,7 +19,7 @@ Providing a signup code at register makes the user an instructor
 | /api/classes/:id | PUT, DEL | Valid token in req.headers.authorization |
 | /api/users/:id/clients-classes | GET | Valid token in req.headers.authorization |
 | /api/users/:id/instructors-classes | GET | Valid token in req.headers.authorization |
-| /api/classes/attend-class | POST | Valid token in req.headers.authorization |
+| /api/users/:id/attend-class | POST | Valid token in req.headers.authorization |
 
 ### Schema for [/api/classes]
 | Name            | Type        | Required | Notes                                                                                                       |
@@ -34,7 +34,7 @@ Providing a signup code at register makes the user an instructor
 | max_class_size  | Int         | No       | Max amount of clients a class can take. Defaults to _64_ (if not provided).                                 |
 | cancelled       | bool        | No       | If the class has been cancelled or not. Defaults to _false_ (if not provided)                               |
 
-### Schema for [/api/classes/attend-class]
+### Schema for [/api/users/:id/attend-class]
 | Name            | Type        | Required |
 |-----------------|-------------|----------|
 | class_id        | Int         | Yes      |
