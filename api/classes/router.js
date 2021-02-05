@@ -1,5 +1,6 @@
 const router = require('express')();
 const Classes = require('./classes-model');
+const Users = require('../auth/users-model');
 const InstructorsClasses = require('../instructors_classes/model');
 
 const dbErrorMessage = {
@@ -20,8 +21,16 @@ router.get('/', async (req, res) => {
 // POST classes -- creates new class object and returns new object upon
 router.post('/', async (req, res) => {
     try {
-        const { user } = req.cookies;
+        const userData = req.headers.user;
         const classData = req.body;
+
+        // Validate user
+        const userObj = await Users.findById(user.sub)
+        if (!userObj) {
+            return res.status(400).json({
+                message: "Expired JWT. Generate new token by logging in"
+            })
+        }
 
         // Validate the request body
         if (!classData.name || !classData.start_time || !classData.duration_hour || !classData.intensity_level || !classData.location) {
@@ -47,7 +56,7 @@ router.post('/', async (req, res) => {
         }
 
         // Now we insert a row into the instructors_classes junction table to link the instructor with their newly created class
-        await InstructorsClasses.add(user.sub, classObj.id);
+        await InstructorsClasses.add(userData.sub, classObj.id);
 
         return res.status(201).json(classObj);
 

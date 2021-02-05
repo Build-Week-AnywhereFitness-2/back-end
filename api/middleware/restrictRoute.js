@@ -16,12 +16,14 @@ function restrictRoute() {
             })
         }
 
-        decodeToken(token, (err) => {
+        decodeToken(token, (err, decoded) => {
             if (err) {
                 return res.status(403).json({
                     message: "Invalid authorization token"
                 })
             }
+
+            req.headers.user = decoded;
 
             return next();
         })

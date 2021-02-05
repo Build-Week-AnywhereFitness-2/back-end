@@ -30,7 +30,7 @@ router.get('/:id/clients-classes', async (req, res) => {
 });
 
 // GET -- api/users/:id/instructors-classes
-router.get(('/:id/instructors-classes'), async (req, res) => {
+router.get('/:id/instructors-classes', async (req, res) => {
     try {
         const { id } = req.params;
         const user = await Users.findById(id);
