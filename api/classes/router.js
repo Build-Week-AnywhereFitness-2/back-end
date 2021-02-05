@@ -25,7 +25,7 @@ router.post('/', async (req, res) => {
         const classData = req.body;
 
         // Validate user
-        const userObj = await Users.findById(user.sub)
+        const userObj = await Users.findById(userData.sub)
         if (!userObj) {
             return res.status(400).json({
                 message: "Expired JWT. Generate new token by logging in"
