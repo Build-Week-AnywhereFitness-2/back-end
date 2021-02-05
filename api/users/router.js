@@ -13,6 +13,14 @@ const dbErrorMsg = {
 router.get('/:id/clients-classes', async (req, res) => {
     try {
         const { id } = req.params;
+        const user = await Users.findById(id);
+
+        if (!user) {
+            return res.status(400).json({
+                message: "No user with that ID"
+            })
+        }
+
         const results = await ClientsClasses.findByUserId(id);
 
         res.status(200).json(results);
@@ -25,6 +33,14 @@ router.get('/:id/clients-classes', async (req, res) => {
 router.get(('/:id/instructors-classes'), async (req, res) => {
     try {
         const { id } = req.params;
+        const user = await Users.findById(id);
+
+        if (!user) {
+            return res.status(400).json({
+                message: "No user with that ID"
+            })
+        }
+
         const results = await InstructorsClasses.findByUserId(id);
 
         res.status(200).json(results);

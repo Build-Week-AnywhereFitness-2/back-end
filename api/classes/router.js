@@ -2,8 +2,6 @@ const router = require('express')();
 const Classes = require('./classes-model');
 const InstructorsClasses = require('../instructors_classes/model');
 
-const validateUserRole = require('../middleware/validateUserRole');
-
 const dbErrorMessage = {
     message: "Some error occured..."
 }
@@ -20,7 +18,7 @@ router.get('/', async (req, res) => {
 });
 
 // POST classes -- creates new class object and returns new object upon
-router.post('/', validateUserRole(), async (req, res) => {
+router.post('/', async (req, res) => {
     try {
         const { user } = req.cookies;
         const classData = req.body;
@@ -60,7 +58,7 @@ router.post('/', validateUserRole(), async (req, res) => {
 })
 
 // PUT classes -- updates class with given id
-router.put('/:id', validateUserRole(), async (req, res) => {
+router.put('/:id', async (req, res) => {
     try {
         const { id } = req.params;
         const changes = req.body;
@@ -97,7 +95,7 @@ router.put('/:id', validateUserRole(), async (req, res) => {
 })
 
 // DELETE classes -- removes class with given id
-router.delete('/:id', validateUserRole(), async (req, res) => {
+router.delete('/:id', async (req, res) => {
     try {
         const { id } = req.params;
 
