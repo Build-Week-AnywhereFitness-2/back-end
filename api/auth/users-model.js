@@ -13,13 +13,12 @@ function findByUsername(username) {
 }
 
 async function add(userData) {
-    const [ newUserID ] = await db('users').insert(userData);
+    const [ newUser ] = await db('users').insert(userData).returning('*');
 
-    if (!newUserID) {
+    if (!newUser) {
         return Promise.resolve(null);
     }
 
-    const newUser = await findById(newUserID);
     return Promise.resolve(newUser);
 }
 

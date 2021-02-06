@@ -42,8 +42,8 @@ router.post('/register', validateUserCreds(), async (req, res) => {
         userData.password = passwordHash;
 
 
-        if (userData.signup_code) {
-          const code = SignupCodes.findByCode(userData.signup_code);
+        if (req.body.signup_code) {
+          const code = await SignupCodes.findByCode(req.body.signup_code);
 
           if (!code) {
             return res.status(400).json({
@@ -58,7 +58,7 @@ router.post('/register', validateUserCreds(), async (req, res) => {
 
         // Add user
         const newUser = await Users.add(userData);
-        return res.status(201).json({ ...newUser, password: "HIDDEN" });
+        return res.status(201).json(newUser);
     } catch (err) {
         console.log(err);
         res.status(500).json(dbErrorMessage);
