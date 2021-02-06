@@ -21,7 +21,7 @@ module.exports = {
 
   development_pg: {
     client: 'pg',
-    connection: 'postgresql://postgres:tucker005@localhost:5432/anywherefitness',
+    connection: `${process.env.DATABASE_URL}`,
     migrations: {
         directory: './data/migrations',
     },
