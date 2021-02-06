@@ -14,13 +14,13 @@ function findBy(...property) {
 }
 
 async function add(classData) {
-    const [ newClassID ] = await db('classes').insert(classData);
+    const [ newClass ] = await db('classes').insert(classData).returning('*');
+    console.log(newClass);
 
-    if (!newClassID) {
+    if (!newClass) {
         return Promise.resolve(null);
     }
 
-    const newClass = await findById(newClassID);
     return Promise.resolve(newClass);
 }
 
@@ -37,13 +37,13 @@ async function remove(id) {
 
 // Returns a promise that resolves to true if successfully changed
 async function update(id, changes) {
-    const changedRecords = await db('classes').where({ id }).update(changes);
+    const [ updatedClass ] = await db('classes').where({ id }).update(changes).returning('*');
 
-    if (!changedRecords || changedRecords <= 0) {
+    if (!updatedClass) {
         return Promise.resolve(null);
     }
 
-    return Promise.resolve(true);
+    return Promise.resolve(updatedClass);
 }
 
 module.exports = {

@@ -86,20 +86,17 @@ router.put('/:id', async (req, res) => {
             })
         }
 
-        const didClassUpdate = await Classes.update(id, changes);
+        const updatedClass = await Classes.update(id, changes);
 
-        if (!didClassUpdate) {
+        if (!updatedClass) {
             return res.status(400).json({
                 message: "Class not updated. Check that you are providing properties to change"
             });
         }
 
-        return res.status(200).json({
-            message: "Class updated"
-        })
-
+        return res.status(200).json(updatedClass);
     } catch {
-        res.status(500).json(dbErrorMsg);
+        res.status(500).json(dbErrorMessage);
     }
 })
 

@@ -12,13 +12,13 @@ function findByUserId(user_id) {
 }
 
 async function add(user_id, class_id) {
-    const [ createdDocs ] = await db('clients_classes').insert({ user_id, class_id });
+    const [ client_class ] = await db('clients_classes').insert({ user_id, class_id }).returning('*');
 
-    if (!createdDocs || createdDocs <= 0) {
+    if (!client_class) {
         return Promise.resolve(null);
     }
 
-    return Promise.resolve(true);
+    return Promise.resolve(client_class);
 }
 
 module.exports = {

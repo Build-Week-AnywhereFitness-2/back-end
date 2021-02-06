@@ -19,9 +19,20 @@ module.exports = {
     }
   },
 
+  development_pg: {
+    client: 'pg',
+    connection: 'postgresql://postgres:tucker005@localhost:5432/anywherefitness',
+    migrations: {
+        directory: './data/migrations',
+    },
+    seeds: {
+        directory: './data/production/seeds',
+    },
+    useNullAsDefault: true
+  },
+
   testing: {
     client: 'sqlite3',
-    useNullAsDefault: true,
     connection: {
       filename: './data/testing/app-testing.db3'
     },
@@ -35,6 +46,7 @@ module.exports = {
 
   production: {
     client: 'pg',
+    useNullAsDefault: true,
     connection: `${process.env.DATABASE_URL}?sslmode=require`,
     migrations: {
         directory: __dirname + '/data/migrations',

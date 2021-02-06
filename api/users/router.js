@@ -70,9 +70,9 @@ router.post('/:id/attend-class', async (req, res) => {
             })
         }
 
-        const didCreateClientClass = await ClientsClasses.add(id, class_id);
+        const client_class = await ClientsClasses.add(id, class_id);
 
-        if (!didCreateClientClass) {
+        if (!client_class) {
             return res.status(500).json({
                 message: "Problem creating attendance"
             })
@@ -81,8 +81,9 @@ router.post('/:id/attend-class', async (req, res) => {
         res.status(200).json({
             message: "Attendance created"
         });
-    } catch {
-
+    } catch (err) {
+        console.log(err)
+        res.status(500).json(dbErrorMsg);
     }
 })
 
